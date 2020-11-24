@@ -17,12 +17,12 @@
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
             crossorigin="anonymous"></script>
 
-    <script src="scripts/index/loadTable.js"></script>
+    <script src="../scripts/index/loadTable.js"></script>
 </head>
 <body>
 
 <h1>
-    SOMETHING
+    Hello : Accident
 </h1>
 </body>
 </html>
