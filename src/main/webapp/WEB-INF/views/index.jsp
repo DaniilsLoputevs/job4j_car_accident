@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <head>
     <meta charset="UTF-8">
     <title>Авто нарушители</title>
@@ -24,5 +26,20 @@
 <h1>
     Hello : Accident
 </h1>
+
+<table>
+    <thead>
+    <tr>
+        <td>members</td>
+    </tr>
+    <jsp:useBean id="accidents" scope="request" type="java.util.List"/>
+    <c:forEach items="${accidents}" var="item">
+        <tr>
+            <td>${item}</td>
+        </tr>
+    </c:forEach>
+
+    </thead>
+</table>
 </body>
 </html>
