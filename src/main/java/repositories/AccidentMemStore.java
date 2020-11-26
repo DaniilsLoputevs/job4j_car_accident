@@ -1,4 +1,4 @@
-package stores;
+package repositories;
 
 import models.Accident;
 import org.slf4j.Logger;

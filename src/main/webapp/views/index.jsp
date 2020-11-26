@@ -28,6 +28,8 @@
     Hello : Accident
 </h1>
 
+<a href="<c:url value='/accidents/create'/>">Добавить инцидент</a>
+
 <div class="container">
     <table class="table table-striped table-inverse">
         <thead>
