@@ -56,13 +56,17 @@ public class Accident {
 
     @Override
     public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
         Accident accident = (Accident) object;
-        return id == accident.id &&
-                Objects.equals(name, accident.name) &&
-                Objects.equals(text, accident.text) &&
-                Objects.equals(address, accident.address);
+        return id == accident.id
+                && Objects.equals(name, accident.name)
+                && Objects.equals(text, accident.text)
+                && Objects.equals(address, accident.address);
     }
 
     @Override
