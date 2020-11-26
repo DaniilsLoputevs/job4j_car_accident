@@ -19,7 +19,8 @@
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
             crossorigin="anonymous"></script>
 
-    <script src="../scripts/index/loadTable.js"></script>
+    <link rel="stylesheet" href="../styles/index.css"/>
+    <script src="../scripts/loadTable.js"></script>
 </head>
 <body>
 
@@ -27,19 +28,24 @@
     Hello : Accident
 </h1>
 
-<table>
-    <thead>
-    <tr>
-        <td>members</td>
-    </tr>
-    <jsp:useBean id="accidents" scope="request" type="java.util.List"/>
-    <c:forEach items="${accidents}" var="item">
+<div class="container">
+    <table class="table table-striped table-inverse">
+        <thead>
         <tr>
-            <td>${item}</td>
+            <td>members</td>
         </tr>
-    </c:forEach>
+        </thead>
+        <tbody>
+        <jsp:useBean id="accidents" scope="request" type="java.util.List"/>
+        <c:forEach items="${accidents}" var="item">
+            <tr>
+                <td>${item}</td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</div>
 
-    </thead>
-</table>
+
 </body>
 </html>
