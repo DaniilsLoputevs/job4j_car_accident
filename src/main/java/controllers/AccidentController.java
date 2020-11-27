@@ -2,22 +2,33 @@ package controllers;
 
 import models.Accident;
 import models.AccidentType;
+import models.Rule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import repositories.AccidentMemStore;
+import repositories.AccidentMemRep;
+import repositories.RuleMemRep;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 public class AccidentController {
-    private final AccidentMemStore accidents;
+    private static final Logger LOG = LoggerFactory.getLogger(AccidentController.class);
+    private final AccidentMemRep accidentsRep;
+    private final RuleMemRep rulesRep;
 
-    public AccidentController(AccidentMemStore accidents) {
-        this.accidents = accidents;
+    public AccidentController(AccidentMemRep accidentsRep, RuleMemRep rulesRep) {
+        this.accidentsRep = accidentsRep;
+        this.rulesRep = rulesRep;
     }
 
     @GetMapping("accidents/create")
@@ -28,19 +39,25 @@ public class AccidentController {
                 AccidentType.of(3, "Машина и велосипед")
         );
         model.addAttribute("types", types);
+
+        model.addAttribute("rules", rulesRep.getAll());
         return "accidents/create";
     }
 
     @PostMapping("/save")
-    public String save(@ModelAttribute Accident accident) {
-        accidents.add(accident);
-        System.out.println("LOG: " + accident);
+    public String save(@ModelAttribute Accident accident, HttpServletRequest req) {
+        LOG.info("accident: {}", accident);
+        Set<Rule> rules = Stream.of(req.getParameterValues("rulesIds"))
+                .map(id -> rulesRep.getBy(Integer.parseInt(id)))
+                .collect(Collectors.toSet());
+        accident.setRules(rules);
+        accidentsRep.add(accident);
         return "redirect:/";
     }
 
     @GetMapping("/update")
     public String update(@RequestParam("id") int id, Model model) {
-        model.addAttribute("accident", accidents.getBy(id));
+        model.addAttribute("accident", accidentsRep.getBy(id));
         return "accidents/update";
     }
 }

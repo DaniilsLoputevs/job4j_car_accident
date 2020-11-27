@@ -6,7 +6,7 @@ import java.util.List;
  * default CRUD operations contract.
  * Create, Read, Update, Delete.
  */
-public interface DbCrudStore<T> {
+public interface BasicCrudRep<T> {
 
     void add(T item);
 

@@ -2,40 +2,48 @@ package repositories;
 
 import models.Accident;
 import models.AccidentType;
+import models.Rule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
-public class AccidentMemStore implements DbCrudStore<Accident> {
-    private static final Logger LOG = LoggerFactory.getLogger(AccidentMemStore.class);
+public class AccidentMemRep implements BasicCrudRep<Accident> {
+    private static final Logger LOG = LoggerFactory.getLogger(AccidentMemRep.class);
 
     private final Map<Integer, Accident> store = new HashMap<>();
+    private int lastIndex = 0;
 
-    public AccidentMemStore() {
+    public AccidentMemRep() {
     }
 
     @PostConstruct
     private void postConstruct() {
         this.addAll(List.of(
                 new Accident(1, "name1", "text1", "address1",
-                        AccidentType.of(1, "type1")),
+                        AccidentType.of(1, "type1"),
+                        Set.of(Rule.of(1, "rule 1"))),
                 new Accident(2, "name2", "text2", "address2",
-                        AccidentType.of(2, "type2")),
+                        AccidentType.of(2, "type2"),
+                        Set.of(Rule.of(2, "rule 2"))),
                 new Accident(3, "name3", "text2", "address3",
-                        AccidentType.of(3, "type3"))
+                        AccidentType.of(3, "type3"),
+                        Set.of(Rule.of(3, "rule 3")))
         ));
     }
 
     @Override
     public void add(Accident item) {
-        store.put(item.getId(), item);
+        int id = item.getId();
+        if (id == 0) {
+            store.put(this.lastIndex, item);
+        } else {
+            store.put(item.getId(), item);
+        }
+        this.lastIndex++;
     }
 
     @Override
@@ -64,7 +72,7 @@ public class AccidentMemStore implements DbCrudStore<Accident> {
         if (!store.containsKey(id)) {
             store.replace(id, item);
         } else {
-            LOG.info("WARN LOG: AccidentMemStore - update() FAIL (details below):");
+            LOG.info("WARN LOG: AccidentMemRep - update() FAIL (details below):");
             LOG.info("id = " + id);
             LOG.info("toSting() :: " + item.toString());
         }
@@ -81,7 +89,7 @@ public class AccidentMemStore implements DbCrudStore<Accident> {
         if (!store.containsKey(id)) {
             store.remove(id, item);
         } else {
-            LOG.info("WARN LOG: AccidentMemStore - delete() FAIL (details below):");
+            LOG.info("WARN LOG: AccidentMemRep - delete() FAIL (details below):");
             LOG.info("id = " + id);
             LOG.info("toSting() :: " + item.toString());
         }
@@ -93,7 +101,7 @@ public class AccidentMemStore implements DbCrudStore<Accident> {
         if (!store.containsKey(id)) {
             store.remove(id);
         } else {
-            LOG.info("WARN LOG: AccidentMemStore - delete() FAIL (details below):");
+            LOG.info("WARN LOG: AccidentMemRep - delete() FAIL (details below):");
             LOG.info("id = " + id);
         }
 //        var temp = new Accident();
@@ -113,7 +121,7 @@ public class AccidentMemStore implements DbCrudStore<Accident> {
 //        if (!store.containsKey(id)) {
 //            function.apply(id);
 //        } else {
-//            LOG.info("WARN LOG: AccidentMemStore - " + logMethod + "() FAIL (details below):");
+//            LOG.info("WARN LOG: AccidentMemRep - " + logMethod + "() FAIL (details below):");
 //            LOG.info("id = " + id);
 //            LOG.info("toSting() :: " + item.toString());
 //        }
