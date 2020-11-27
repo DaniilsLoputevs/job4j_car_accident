@@ -1,6 +1,7 @@
 package repositories;
 
 import models.Accident;
+import models.AccidentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -23,9 +24,12 @@ public class AccidentMemStore implements DbCrudStore<Accident> {
     @PostConstruct
     private void postConstruct() {
         this.addAll(List.of(
-                new Accident(1, "name1", "text1", "address1"),
-                new Accident(2, "name2", "text2", "address2"),
-                new Accident(3, "name3", "text2", "address3")
+                new Accident(1, "name1", "text1", "address1",
+                        AccidentType.of(1, "type1")),
+                new Accident(2, "name2", "text2", "address2",
+                        AccidentType.of(2, "type2")),
+                new Accident(3, "name3", "text2", "address3",
+                        AccidentType.of(3, "type3"))
         ));
     }
 
@@ -46,7 +50,7 @@ public class AccidentMemStore implements DbCrudStore<Accident> {
 
     @Override
     public <V> List<Accident> getBy(String fieldName, V value) {
-        return null;
+        throw new UnsupportedOperationException("This interface method doesn't realise yet.");
     }
 
     @Override

@@ -19,8 +19,8 @@
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
             crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="../styles/index.css"/>
-    <script src="../scripts/loadTable.js"></script>
+<%--    <link rel="stylesheet" href="../styles/index.css"/>--%>
+<%--    <script src="../scripts/loadTable.js"></script>--%>
 </head>
 <body>
 

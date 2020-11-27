@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Accident;
+import models.AccidentType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import repositories.AccidentMemStore;
+
+import java.util.List;
 
 @Controller
 public class AccidentController {
@@ -18,7 +21,13 @@ public class AccidentController {
     }
 
     @GetMapping("accidents/create")
-    public String create() {
+    public String create(Model model) {
+        List<AccidentType> types = List.of(
+                AccidentType.of(1, "Две машины"),
+                AccidentType.of(2, "Машина и человек"),
+                AccidentType.of(3, "Машина и велосипед")
+        );
+        model.addAttribute("types", types);
         return "accidents/create";
     }
 
