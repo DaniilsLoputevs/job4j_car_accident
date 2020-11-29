@@ -1,4 +1,4 @@
-package config;
+package config.jpa;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
 @PropertySource("classpath:app.properties")
@@ -35,13 +36,19 @@ public class DataConfig {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource ds) {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(
+            @Value("${hibernate.dialect}") String dialect,
+            DataSource ds) {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setGenerateDdl(true);
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("ru.job4j.accident");
+        factory.setPackagesToScan("models");
         factory.setDataSource(ds);
+
+        Properties cfg = new Properties();
+        cfg.setProperty("hibernate.dialect", dialect);
+        factory.setJpaProperties(cfg);
         return factory;
     }
 

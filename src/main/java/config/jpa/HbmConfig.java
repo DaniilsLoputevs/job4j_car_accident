@@ -1,4 +1,4 @@
-package config;
+package config.jpa;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
