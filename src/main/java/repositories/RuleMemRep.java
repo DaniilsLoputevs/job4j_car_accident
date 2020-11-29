@@ -71,4 +71,9 @@ public class RuleMemRep implements BasicCrudRep<Rule> {
     public void deleteAll(List<Rule> items) {
         throw new UnsupportedOperationException("This interface method doesn't realise yet.");
     }
+
+    @Override
+    public int size() {
+        return this.store.size();
+    }
 }

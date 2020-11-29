@@ -27,4 +27,6 @@ public interface BasicCrudRep<T> {
     void delete(int id);
 
     void deleteAll(List<T> items);
+
+    int size();
 }

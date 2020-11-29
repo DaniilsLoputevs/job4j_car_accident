@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.function.BiConsumer;
 
 @Repository
 public class AccidentMemRep implements BasicCrudRep<Accident> {
@@ -68,14 +69,7 @@ public class AccidentMemRep implements BasicCrudRep<Accident> {
 
     @Override
     public void update(Accident item) {
-        int id = item.getId();
-        if (!store.containsKey(id)) {
-            store.replace(id, item);
-        } else {
-            LOG.info("WARN LOG: AccidentMemRep - update() FAIL (details below):");
-            LOG.info("id = " + id);
-            LOG.info("toSting() :: " + item.toString());
-        }
+        this.coreDataManipulation(item, store::replace, "update(accident)");
     }
 
     @Override
@@ -85,28 +79,14 @@ public class AccidentMemRep implements BasicCrudRep<Accident> {
 
     @Override
     public void delete(Accident item) {
-        int id = item.getId();
-        if (!store.containsKey(id)) {
-            store.remove(id, item);
-        } else {
-            LOG.info("WARN LOG: AccidentMemRep - delete() FAIL (details below):");
-            LOG.info("id = " + id);
-            LOG.info("toSting() :: " + item.toString());
-        }
-//        this.delete(item.getId());
+        this.coreDataManipulation(item, store::remove, "delete(accident)");
     }
 
     @Override
     public void delete(int id) {
-        if (!store.containsKey(id)) {
-            store.remove(id);
-        } else {
-            LOG.info("WARN LOG: AccidentMemRep - delete() FAIL (details below):");
-            LOG.info("id = " + id);
-        }
-//        var temp = new Accident();
-//        temp.setId(id);
-//        this.coreManipulation(temp, store::remove, "delete");
+        var temp = new Accident();
+        temp.setId(id);
+        this.coreDataManipulation(temp, store::remove, "delete(id)");
     }
 
     @Override
@@ -114,16 +94,22 @@ public class AccidentMemRep implements BasicCrudRep<Accident> {
         items.forEach(this::delete);
     }
 
-//    private void coreManipulation(Accident item,
-//                                  Function<Accident, Accident> function,
-//                                  String logMethod) {
-//        int id = item.getId();
-//        if (!store.containsKey(id)) {
-//            function.apply(id);
-//        } else {
-//            LOG.info("WARN LOG: AccidentMemRep - " + logMethod + "() FAIL (details below):");
-//            LOG.info("id = " + id);
-//            LOG.info("toSting() :: " + item.toString());
-//        }
-//    }
+    private void coreDataManipulation(Accident item,
+                                      BiConsumer<Integer, Accident> function,
+                                      String methodNameForLog) {
+        int id = item.getId();
+        if (store.containsKey(id)) {
+            function.accept(id, item);
+        } else {
+            LOG.warn("AccidentMemRep - {} FAIL:", methodNameForLog);
+            LOG.warn("id={} do not contains in repository", id);
+            LOG.warn("details: {}", item);
+        }
+    }
+
+    @Override
+    public int size() {
+        return this.store.size();
+    }
+
 }
