@@ -11,7 +11,7 @@ public class WebInit implements WebApplicationInitializer {
 
     public void onStartup(ServletContext servletCxt) {
         AnnotationConfigWebApplicationContext ac = new AnnotationConfigWebApplicationContext();
-        ac.register(WebConfig.class, HbmConfig.class);
+        ac.register(WebConfig.class, DataConfig.class);
 
         ac.setServletContext(servletCxt);
         DispatcherServlet servlet = new DispatcherServlet(ac);
