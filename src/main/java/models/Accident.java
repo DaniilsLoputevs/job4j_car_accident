@@ -1,18 +1,33 @@
 package models;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
 import java.util.StringJoiner;
 
 @Component
+@Entity
+@Table(name = "accidents")
 public class Accident {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String text;
     private String address;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JoinColumn(name = "type_id")
     private AccidentType type;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JoinColumn(name = "rulesid")
     private Set<Rule> rules;
 
     public Accident() {
