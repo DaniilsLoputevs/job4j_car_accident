@@ -25,10 +25,9 @@
 <body>
 
 <h1>
+    Login as : ${user.username}
     Hello : Accident
-    <div>
-        Login as : ${user.username}
-    </div>
+    <a href="<c:url value='/reg'/>">Регистрация</a>
 </h1>
 
 <a href="<c:url value='/accidents/create'/>">Add accident</a>
