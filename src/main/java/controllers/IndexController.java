@@ -2,6 +2,7 @@ package controllers;
 
 import models.Accident;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,8 @@ public class IndexController {
         List<Accident> res = new ArrayList<>();
         accidentRepository.findAll().forEach(res::add);
         model.addAttribute("accidents", res);
+        model.addAttribute("user", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        model.addAttribute("accidents", accidentRepository.findAll());
         return "index";
     }
 
