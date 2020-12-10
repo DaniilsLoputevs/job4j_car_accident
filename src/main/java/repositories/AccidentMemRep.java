@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 
 @Repository
@@ -16,7 +17,7 @@ public class AccidentMemRep implements BasicCrudRep<Accident> {
     private static final Logger LOG = LoggerFactory.getLogger(AccidentMemRep.class);
 
     private final Map<Integer, Accident> store = new HashMap<>();
-    private int lastIndex = 0;
+    private final AtomicInteger index = new AtomicInteger(0);
 
     public AccidentMemRep() {
     }
@@ -40,11 +41,11 @@ public class AccidentMemRep implements BasicCrudRep<Accident> {
     public void add(Accident item) {
         int id = item.getId();
         if (id == 0) {
-            store.put(this.lastIndex, item);
+            store.put(index.getAndIncrement(), item);
         } else {
             store.put(item.getId(), item);
         }
-        this.lastIndex++;
+        index.getAndIncrement();
     }
 
     @Override

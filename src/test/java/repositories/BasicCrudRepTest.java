@@ -12,7 +12,7 @@ public class BasicCrudRepTest {
     private final BasicCrudRep<Accident> rep = new AccidentMemRep();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         var one = new Accident();
         var two = new Accident();
         var three = new Accident();
@@ -24,7 +24,6 @@ public class BasicCrudRepTest {
 
     @Test
     public void update() {
-        // update
         var updAcc = new Accident();
         updAcc.setId(1);
         updAcc.setName("UPD");
@@ -34,7 +33,6 @@ public class BasicCrudRepTest {
 
     @Test
     public void deleteById() {
-        // delete
         rep.delete(3);
         assertEquals(2, rep.size());
     }
