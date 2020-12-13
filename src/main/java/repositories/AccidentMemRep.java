@@ -8,7 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 
@@ -16,7 +20,7 @@ import java.util.function.BiConsumer;
 public class AccidentMemRep implements BasicCrudRep<Accident> {
     private static final Logger LOG = LoggerFactory.getLogger(AccidentMemRep.class);
 
-    private final Map<Integer, Accident> store = new HashMap<>();
+    private final Map<Integer, Accident> store = new ConcurrentHashMap<>();
     private final AtomicInteger index = new AtomicInteger(0);
 
     public AccidentMemRep() {
