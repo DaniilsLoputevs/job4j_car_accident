@@ -24,12 +24,18 @@ import java.util.stream.Stream;
 public class AccidentController {
     private static final Logger LOG = LoggerFactory.getLogger(AccidentController.class);
     private final AccidentMemRep accidentsRep;
+//    private final AccidentRepository accidentsRep;
     private final RuleMemRep rulesRep;
+//    private final RuleMemRep rulesRep;
 
     public AccidentController(AccidentMemRep accidentsRep, RuleMemRep rulesRep) {
         this.accidentsRep = accidentsRep;
         this.rulesRep = rulesRep;
     }
+//    public AccidentController(AccidentRepository accidentsRep, RuleMemRep rulesRep) {
+//        this.accidentsRep = accidentsRep;
+//        this.rulesRep = rulesRep;
+//    }
 
     @GetMapping("accidents/create")
     public String create(Model model) {
@@ -46,17 +52,20 @@ public class AccidentController {
 
     @PostMapping("/save")
     public String save(@ModelAttribute Accident accident, HttpServletRequest req) {
-        LOG.info("accident: {}", accident);
+//        LOG.info("accident: {}", accident);
         Set<Rule> rules = Stream.of(req.getParameterValues("rulesIds"))
                 .map(id -> rulesRep.getBy(Integer.parseInt(id)))
                 .collect(Collectors.toSet());
         accident.setRules(rules);
+        System.out.println("DEV :: accident = " + accident);
+//        accidentsRep.save(accident);
         accidentsRep.add(accident);
         return "redirect:/";
     }
 
     @GetMapping("/update")
     public String update(@RequestParam("id") int id, Model model) {
+//        model.addAttribute("accident", accidentsRep.findById(id));
         model.addAttribute("accident", accidentsRep.getBy(id));
         return "accidents/update";
     }
